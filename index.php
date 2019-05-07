@@ -24,7 +24,7 @@
     } else {
         if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) { //Salva o arquivo no servidor
             //Variavel contendo o comando que será executado
-            $request = "cd /var/www/service/; java -cp /var/www/service/lib/weka.jar:/var/www/service/lib/gson-2.6.2.jar:/var/www/service/Analyzer.jar lab.EmotionAnalyzer $target_file 2>/dev/null";
+            $request = "cd /home/ileel/; java -cp lib/weka.jar:lib/gson-2.6.2.jar:Analyzer.jar lab.EmotionAnalyzer $target_file 2>/dev/null";
             $output = shell_exec($request); //Executa o comando e salva sua saida
             exec("rm $target_file"); //Remove o arquivo passado do servidor
             echo $output; //Mostra a saída na tela
