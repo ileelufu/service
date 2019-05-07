@@ -5,7 +5,7 @@
 
     $random = rand(0000000000, 9999999999); //Gera uma variavel aleatória
 
-    $target_dir = "/home/marcos/uploads/"; //Diretório onde serão salvos os arquivos
+    $target_dir = "/home/ileel/service/upload/"; //Diretório onde serão salvos os arquivos
     $target_base = $target_dir . basename($_FILES["fileToUpload"]["name"]); //Define o nome padrão do arquivo
     $uploadOk = 1; //Essa variavel verifica se o upload ocorreu corretamente, isso evita colocar ifs um dentro do outro
     $FileType = strtolower(pathinfo($target_base,PATHINFO_EXTENSION)); //Pega a extensão do arquivo passado, isso em minúculo
@@ -24,7 +24,12 @@
     } else {
         if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) { //Salva o arquivo no servidor
             //Variavel contendo o comando que será executado
-            $request = "cd /home/ileel/; java -cp lib/weka.jar:lib/gson-2.6.2.jar:Analyzer.jar lab.EmotionAnalyzer $target_file 2>/dev/null";
+	    if($FileType == "jpg"){
+		$request = "cd /home/ileelservice/FaceEmotionAnalyzer; python3 main.py --image $target_file 2>/dev/null";
+	    }
+	    if($FileType == "wav"){
+		$request = "cd /home/ileel/service/; java -cp lib/weka.jar:lib/gson-2.6.2.jar:Analyzer.jar lab.EmotionAnalyzer $target_file 2>/dev/null";
+	    }
             $output = shell_exec($request); //Executa o comando e salva sua saida
             exec("rm $target_file"); //Remove o arquivo passado do servidor
             echo $output; //Mostra a saída na tela
